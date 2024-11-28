@@ -11,8 +11,8 @@ export default function Header() {
           <Image
             src="/logo_anatomix.jpg"   // Path to your logo inside the public folder
             alt="Anatomix Logo"
-            width={100}        // Adjust the width as needed
-            height={100}       // Adjust the height as needed
+            width={75}        // Adjust the width as needed
+            height={75}       // Adjust the height as needed
             className="rounded-full" // Makes the image round
           />
           <div className="ml-3 text-3xl text-gray-900 titan-one-regular ">Anatomix</div>

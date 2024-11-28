@@ -14,7 +14,6 @@ export default function Explore() {
     <h1 className="wt-title-better">
     Let's learn more, better & faster.
     </h1>
-    <div className="h-12 mt-4 bg-white center w-80"></div> {/* Empty rectangle */}
     </div>
     
     {/* Main Content */}
@@ -29,7 +28,7 @@ export default function Explore() {
     
     {/* Middle Image */}
     <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <div style={{ width: "600px", height: "600px" }}>
+      <div style={{ width: "600px", height: "900px" }}>
         <HumanModelComponent />
       </div>
     </div>
@@ -37,20 +36,12 @@ export default function Explore() {
     {/* Right Buttons */}
     <div className="flex flex-col space-y-4">
     <button className="px-4 py-2 text-gray-800 bg-white rounded">Tête</button>
-    <button className="px-4 py-2 text-gray-800 bg-white rounded">Tors</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Torse</button>
     <button className="px-4 py-2 text-gray-800 bg-white rounded">Pieds</button>
     </div>
     </div>
     </div>
     
-    {/* Bottom Search Bar */}
-    <div className="mt-8">
-    <input
-    type="text"
-    placeholder="Recherche d'une partie du corps"
-    className="p-3 bg-white rounded w-96"
-    />
-    </div>
     </div>
     </Layout>
   );
