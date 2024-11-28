@@ -21,9 +21,9 @@ export default function Explore() {
     <div className="flex items-center justify-center space-x-8">
     {/* Left Buttons */}
     <div className="flex flex-col space-y-4">
-    <button className="px-4 py-2 text-gray-800 bg-white rounded">Bras</button>
-    <button className="px-4 py-2 text-gray-800 bg-white rounded">Main</button>
-    <button className="px-4 py-2 text-gray-800 bg-white rounded">Jambes</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Peau</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Muscles</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Reset</button>
     </div>
     
     {/* Middle Image */}
@@ -37,6 +37,9 @@ export default function Explore() {
     <div className="flex flex-col space-y-4">
     <button className="px-4 py-2 text-gray-800 bg-white rounded">Tête</button>
     <button className="px-4 py-2 text-gray-800 bg-white rounded">Torse</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Bras</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Main</button>
+    <button className="px-4 py-2 text-gray-800 bg-white rounded">Jambes</button>
     <button className="px-4 py-2 text-gray-800 bg-white rounded">Pieds</button>
     </div>
     </div>

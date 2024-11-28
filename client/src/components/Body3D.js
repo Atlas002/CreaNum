@@ -38,9 +38,13 @@ function HumanModelComponent() {
       const ambientLight = new THREE.AmbientLight(0xbbbbbb, 0.5);
       scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(0, 10, 10);
-      scene.add(directionalLight);
+      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight1.position.set(0, 10, 10);
+      scene.add(directionalLight1);
+
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight2.position.set(0, 10, -10);
+      scene.add(directionalLight2);
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
