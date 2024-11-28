@@ -4,104 +4,127 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-function HumanModelComponent() {
+function HumanModelComponent({ modelType, target, reset }) {
   const canvasRef = useRef(null);
-  const rendererRef = useRef(null); // Prevent duplicate renderer creation
-  const sceneRef = useRef(null); // Persist scene instance
+  const rendererRef = useRef(null);
+  const sceneRef = useRef(new THREE.Scene());
+  const cameraRef = useRef(new THREE.PerspectiveCamera(75, 1, 0.1, 5000));
+  const controlsRef = useRef(null);
+  const modelRef = useRef(null);
+
+  const modelPaths = {
+    peau: "/peau.glb",
+    muscles: "/muscles.glb",
+  };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!canvasRef.current || rendererRef.current) return; // Prevent duplicate initialization
+    const canvas = canvasRef.current;
 
-      // Dimensions
-      const width = canvasRef.current.clientWidth;
-      const height = canvasRef.current.clientHeight;
-
-      // Scene
-      const scene = new THREE.Scene();
-      scene.background = null; // Transparent background
-      sceneRef.current = scene; // Cache scene
-
-      // Camera
-      const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 5000);
-      camera.position.set(0, 0, 2); // Adjust camera position
-      scene.add(camera);
-
-      // Renderer
+    // Initialize Renderer
+    if (!rendererRef.current) {
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(width, height);
-      canvasRef.current.appendChild(renderer.domElement);
-      rendererRef.current = renderer; // Store renderer reference
-
-      // Lighting
-      const ambientLight = new THREE.AmbientLight(0xbbbbbb, 0.5);
-      scene.add(ambientLight);
-
-      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight1.position.set(0, 10, 10);
-      scene.add(directionalLight1);
-
-      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight2.position.set(0, 10, -10);
-      scene.add(directionalLight2);
-
-      // Controls
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.05;
-
-      // Restrict vertical rotation (polar angle)
-      controls.minPolarAngle = Math.PI / 4; // Allow limited upward view
-      controls.maxPolarAngle = (3 * Math.PI) / 4; // Allow limited downward view
-
-      // Enable zoom with the scroll wheel
-      controls.enableZoom = true;
-      controls.minDistance = 0.5; // Minimum zoom distance
-      controls.maxDistance = 10; // Maximum zoom distance
-
-      // Load GLTF model
-      const loader = new GLTFLoader();
-      loader.load(
-        "/peau.glb", // Replace with the correct path to your GLTF file
-        (gltf) => {
-          const model = gltf.scene;
-          model.position.set(0, -1, 0); // Center the model
-          model.scale.set(1, 1, 1); // Adjust scale if needed
-          scene.add(model);
-        },
-        undefined,
-        (error) => {
-          console.error("An error occurred while loading the model:", error);
-        }
-      );
-
-      // Animation loop
-      const animate = () => {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      };
-      animate();
-
-      // Handle window resize
-      const handleResize = () => {
-        const newWidth = canvasRef.current.clientWidth;
-        const newHeight = canvasRef.current.clientHeight;
-        camera.aspect = newWidth / newHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(newWidth, newHeight);
-      };
-      window.addEventListener("resize", handleResize);
-
-      // Cleanup on unmount
-      return () => {
-        window.removeEventListener("resize", handleResize);
-        renderer.dispose();
-        rendererRef.current = null; // Reset renderer reference
-      };
+      canvas.appendChild(renderer.domElement);
+      rendererRef.current = renderer;
     }
-  }, []); // Empty dependency array ensures this runs only once
+
+    const renderer = rendererRef.current;
+
+    // Initialize Scene, Camera, and Controls
+    const scene = sceneRef.current;
+    scene.background = null;
+
+    const camera = cameraRef.current;
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.position.set(0, 0, 2);
+    camera.updateProjectionMatrix();
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controlsRef.current = controls;
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xbbbbbb, 0.5);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 10, 10);
+    scene.add(directionalLight);
+
+    // Handle Window Resize
+    const handleResize = () => {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Animation Loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      renderer.dispose();
+    };
+  }, []);
+
+  // Load Model when `modelType` changes
+  useEffect(() => {
+    if (!modelType || !modelPaths[modelType]) return;
+
+    const loader = new GLTFLoader();
+    const scene = sceneRef.current;
+
+    if (modelRef.current) {
+      scene.remove(modelRef.current);
+    }
+
+    loader.load(
+      modelPaths[modelType],
+      (gltf) => {
+        modelRef.current = gltf.scene;
+        modelRef.current.position.set(0, -1, 0);
+        modelRef.current.scale.set(1, 1, 1);
+        scene.add(modelRef.current);
+      },
+      undefined,
+      (error) => console.error("Error loading model:", error)
+    );
+  }, [modelType]);
+
+  // Handle Zooming to Target
+  useEffect(() => {
+    if (!target) return;
+
+    const { x, y, z, distance } = target;
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+
+    controls.enabled = false; // Disable camera controls
+    camera.position.set(x, y, z + distance);
+    camera.lookAt(x, y, z);
+  }, [target]);
+
+  // Handle Reset
+  useEffect(() => {
+    if (!reset) return;
+
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+
+    camera.position.set(0, 0, 2);
+    camera.lookAt(0, 0, 0);
+    controls.enabled = true; // Re-enable camera controls
+  }, [reset]);
 
   return <div ref={canvasRef} className="w-full h-full" />;
 }
