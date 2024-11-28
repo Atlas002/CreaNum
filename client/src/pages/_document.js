@@ -7,7 +7,6 @@ export default function Document() {
       <Head>
         {/* Add Google Fonts or custom meta tags here */}
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
         <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet"/>
       </Head>
       <body>

@@ -25,12 +25,7 @@ export default function Header() {
           </Link>
           <Link href="/explore" className="text-gray-700 transition hover:text-black">
             Explore
-          </Link>
-          <Link href="/about" className="text-gray-700 transition hover:text-black">
-            About
-          </Link>
-          <Link href="/contacts" className="text-gray-700 transition hover:text-black">
-            Contacts
+          
           </Link>
         </div>
       </nav>

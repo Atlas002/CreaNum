@@ -1,5 +1,9 @@
 // About page
+"use client";
+
 import Layout from '../components/Layout';
+import React from "react";
+import HumanModelComponent from "../components/Body3D";
 
 export default function Explore() {
   return (
@@ -24,12 +28,10 @@ export default function Explore() {
     </div>
     
     {/* Middle Image */}
-    <div className="flex justify-center">
-    <img
-    src="/path-to-image" // You can replace this with an actual path or link to the image
-    alt="Body"
-    className="h-80" // Adjust the height as needed
-    />
+    <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div style={{ width: "600px", height: "600px" }}>
+        <HumanModelComponent />
+      </div>
     </div>
     
     {/* Right Buttons */}

@@ -12,6 +12,9 @@ export default function Home() {
           <p className="mb-8 text-xl text-black-600">
             Discover the amazing nature of the human body.
           </p>
+          <p className="mb-8 text-black-600">
+            A Project brought to you by Arthur, Elise, Mathis and Virgile.
+          </p>
           <LinkButton href = "/explore">
           Explore Now!
           </LinkButton>
