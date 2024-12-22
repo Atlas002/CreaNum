@@ -52,6 +52,10 @@ function HumanModelComponent({ modelType, target, reset }) {
     directionalLight.position.set(0, 10, 10);
     scene.add(directionalLight);
 
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight2.position.set(0, 10, -10);
+    scene.add(directionalLight2);
+
     // Handle Window Resize
     const handleResize = () => {
       const width = canvas.clientWidth;
